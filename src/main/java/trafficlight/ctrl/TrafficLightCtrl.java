@@ -1,8 +1,10 @@
 package trafficlight.ctrl;
 
 import trafficlight.gui.TrafficLightGui;
+import trafficlight.observer.Observer;
 import trafficlight.states.State;
 
+//implement Singleton Pattern here
 public class TrafficLightCtrl {
 
     private State greenState;
@@ -19,20 +21,39 @@ public class TrafficLightCtrl {
 
     private boolean doRun = true;
 
-    public TrafficLightCtrl() {
+    //implement controller as Singleton
+    private static TrafficLightCtrl ctrl;
+
+    //getInstance methode for Singleton
+    //if there isn't a controller, it creates a new one and returns it
+    public static TrafficLightCtrl getInstance() {
+        if (ctrl == null) {
+            ctrl = new TrafficLightCtrl();
+        }
+        return ctrl;
+    }
+
+    //needs to be private so it doesn't return the same stuff every time and notify observer about the current state
+    private TrafficLightCtrl() {
         super();
         initStates();
         gui = new TrafficLightGui(this);
         gui.setVisible(true);
         //TODO useful to update the current state
+        //currentstate change notifies the observers
+        currentState.notifyObserver();
     }
 
+    //when each state (color) changes, the observers need to be notified
     private void initStates() {
         greenState = new State() {
             @Override
             public State getNextState() {
                 previousState = currentState;
                 //TODO useful to update the current state and the old one
+                //current state is updated and it changes into next (yellow) state -> Observers are notified
+                currentState.notifyObserver();
+                yellowState.notifyObserver();
                 return yellowState;
             }
             @Override
@@ -46,6 +67,9 @@ public class TrafficLightCtrl {
             public State getNextState() {
                 previousState = currentState;
                 //TODO useful to update the current state and the old one
+                //current state is updated and it changes from red to yellow -> Observers are notified
+                yellowState.notifyObserver();
+                currentState.notifyObserver();
                 return yellowState;
             }
             @Override
@@ -60,10 +84,17 @@ public class TrafficLightCtrl {
                 if (previousState.equals(greenState)) {
                     previousState = currentState;
                     //TODO useful to update the current state and the old one
+                    //yellow state can go both ways - either green or red
+                    //in both cases, observers need to be notified
+                    currentState.notifyObserver();
+                    redState.notifyObserver();
+
                     return redState;
                 }else {
                     previousState = currentState;
                     //TODO useful to update the current state and the old one
+                    currentState.notifyObserver();
+                    greenState.notifyObserver();
                     return greenState;
                 }
             }

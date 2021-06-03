@@ -1,9 +1,12 @@
 package trafficlight.gui;
 
 
+import trafficlight.observer.Observer;
+
 import java.awt.*;
 
-public class TrafficLight extends Light {
+//the concreteObserver of the interface Observer
+public class TrafficLight extends Light implements Observer {
 
     TrafficLight(Color color) {
         super(color);
@@ -18,5 +21,13 @@ public class TrafficLight extends Light {
         return isOn;
     }
 
-    //TODO implement a part of the pattern here
+
+    //overridden method from observer interface
+    @Override
+    public void update() {
+        //changes boolean state aka if it is turned on, it will turn off and vise versa
+        this.turnOn(!isOn);
+    }
 }
+//TODO implement a part of the pattern here
+
