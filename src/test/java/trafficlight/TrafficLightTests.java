@@ -111,5 +111,36 @@ public class TrafficLightTests {
         assertNotEquals(control.getCurrentState(), control.getGreenState());
     }
 
+    @Test
+    @DisplayName("check yellow to green")
+    public void ChangeFromYellowToGreen() {
+        TrafficLightCtrl control = TrafficLightCtrl.getInstance();
+        control.nextState();
+        control.nextState();
+        control.nextState();
+        control.nextState();
+        assertEquals(control.getCurrentState(), control.getGreenState());
+    }
 
+    @Test
+    @DisplayName("check yellow to green")
+    public void ChangeFromYellowToGreen2() {
+        TrafficLightCtrl control = TrafficLightCtrl.getInstance();
+        control.nextState();
+        control.nextState();
+        control.nextState();
+        control.nextState();
+        assertNotEquals(control.getCurrentState(), control.getRedState());
+    }
+
+    @Test
+    @DisplayName("check yellow to green")
+    public void ChangeFromYellowToGreen3() {
+        TrafficLightCtrl control = TrafficLightCtrl.getInstance();
+        control.nextState();
+        control.nextState();
+        control.nextState();
+        control.nextState();
+        assertEquals(control.getCurrentState(), control.getYellowState());
+    }
 }
