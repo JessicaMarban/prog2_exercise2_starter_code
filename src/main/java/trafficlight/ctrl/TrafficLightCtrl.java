@@ -119,6 +119,12 @@ public class TrafficLightCtrl {
         return yellowState;
     }
 
+
+    //getter to be able to test for the beginning state
+    public State getCurrentState() {
+       return this.currentState;
+    }
+
     public void run()  {
         int intervall = 1500;
         while (doRun) {
