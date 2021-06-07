@@ -122,7 +122,14 @@ public class TrafficLightCtrl {
 
     //getter to be able to test for the beginning state
     public State getCurrentState() {
-       return this.currentState;
+       return currentState;
+    }
+
+    //we need to be able to reset the state to the original state in oder to do testing
+    public void resetState() {
+        currentState = greenState;
+        previousState = yellowState;
+        //as seen at the end of initStates method
     }
 
     public void run()  {
